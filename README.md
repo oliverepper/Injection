@@ -31,3 +31,19 @@ struct MyApp {
    }
 }
 ```
+
+You can even have a little fun with it:
+
+```swift
+
+Injection.container.register {
+   Dependenxy { "The Answer to the Ultimate Question of Life, The Universe, and Everything." }
+   Dependency { Int(42) }
+}
+
+@Injected var question: String
+@Injected var answer: Int
+```
+
+You can only have one dependecy per type, though. It's 54 lines of code, what do you expect ;) Swift rocks!
+
