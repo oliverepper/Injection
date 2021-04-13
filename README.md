@@ -45,5 +45,5 @@ Injection.container.register {
 @Injected var answer: Int
 ```
 
-You can only have one dependecy per type, though. It's 54 lines of code, what do you expect ;) Swift rocks!
+You can only have one dependency per type, though. It's 54 lines of code – what do you expect ;) Swift rocks!
 
