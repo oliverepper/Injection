@@ -1,9 +1,9 @@
 public struct Dependency {
-    var name: String
+    var id: ObjectIdentifier
     var wrappedValue: Any
 
     public init<T>(_ block: @escaping () -> T) {
-        name = String(describing: T.self)
+        id = ObjectIdentifier(T.self)
         wrappedValue = block()
     }
 }
@@ -33,7 +33,7 @@ public struct Dependencies {
     }
 
     private mutating func _register(_ dependency: Dependency) {
-        guard dependencies.filter({ $0.name == dependency.name }).count == 0 else {
+        guard dependencies.filter({ $0.id == dependency.id }).count == 0 else {
             return
         }
         dependencies.append(dependency)
