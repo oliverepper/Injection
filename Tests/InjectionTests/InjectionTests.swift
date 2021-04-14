@@ -8,12 +8,20 @@ final class InjectionTests: XCTestCase {
         func stop() -> Bool { false }
     }
 
+    struct OtherService {
+        @Injected var myService: MyService
+
+        func start() -> Bool {
+            return myService.start()
+        }
+    }
+
     @Injected var myService: MyService
     @Injected var myClosure: Bool
     @Injected var myString: String
 
     func testRegisterMyService() {
-        Injection.container.register {
+        Injection.shared.register {
             Dependency { MyService() }
         }
 
@@ -21,7 +29,7 @@ final class InjectionTests: XCTestCase {
     }
 
     func testRegisterClosure() {
-        Injection.container.register {
+        Injection.shared.register {
             Dependency { false }
         }
 
@@ -29,7 +37,7 @@ final class InjectionTests: XCTestCase {
     }
 
     func testRegisterMyServiceAndMyString() {
-        Injection.container.register {
+        Injection.shared.register {
             Dependency { MyService() }
             Dependency { "Swift rocks!" }
         }
@@ -39,7 +47,7 @@ final class InjectionTests: XCTestCase {
     }
 
     func testRegisterMultipleDependencies() {
-        Injection.container.register {
+        Injection.shared.register {
             Dependency { MyService() }
             Dependency { MyService() }
             Dependency { MyService() }
@@ -47,7 +55,7 @@ final class InjectionTests: XCTestCase {
     }
 
     func testWithoutInjectionReference() {
-        var deps = Dependencies()
+        let deps = Injection()
         deps.register {
             Dependency { MyService() }
         }
@@ -55,5 +63,15 @@ final class InjectionTests: XCTestCase {
         let service: MyService = deps.resolve()
 
         XCTAssert(service.start() == true)
+    }
+
+    func testOtherDependsOnMyService() {
+        Injection.shared.register {
+            Dependency { MyService() }
+            Dependency { OtherService() }
+        }
+
+        let otherService: OtherService = Injection.shared.resolve()
+        XCTAssert(otherService.start() == true)
     }
 }

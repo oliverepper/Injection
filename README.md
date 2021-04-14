@@ -7,19 +7,19 @@ This is heavily based on the packacke [Injected](https://github.com/avdyushin/In
 You can create and use a dependency container like this:
 
 ```swift
-let myContainer = Dependencies()
+let myContainer = Injection()
 myContainer.register {
    Dependency { AService() }
    Dependency { BService() }
 }
 
-let service: AService = myContainer.resolve()
+let service: AService = Injection.resolve()
 ```
 
-Where it get's even cooler is when you use the `@Injected` property wrapper. For this to work your dependency must be registered with the shared container `Injection.container`:
+Where it get's even cooler is when you use the `@Injected` property wrapper. For this to work your dependency must be registered with the shared container `Injection.shared`:
 
 ```swift
-Injection.container.register {
+Injection.shared.register {
    Dependency { AService }
 }
 
@@ -36,7 +36,7 @@ You can even have a little fun with it:
 
 ```swift
 
-Injection.container.register {
+Injection.shared.register {
    Dependency { "The Answer to the Ultimate Question of Life, The Universe, and Everything." }
    Dependency { 42 }
 }
